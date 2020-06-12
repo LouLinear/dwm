@@ -66,11 +66,16 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *pulseupcmd[] = {"pulsemixer", "--change-volume", "+5", NULL};
+static const char *pulsedowncmd[] = {"pulsemixer", "--change-volume", "-5", NULL};
+static const char *pulsemutecmd[] = {"pulsemixer", "--toggle-mute", NULL};
+static const char *suspendcmd[] = {"systemctl", "suspend", NULL};
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = suspendcmd }},
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -110,6 +115,9 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ 0,                            XF86XK_AudioRaiseVolume, spawn, {.v = pulseupcmd}},
+	{ 0,                            XF86XK_AudioLowerVolume, spawn, {.v = pulsedowncmd}},
+	{ 0,                            XF86XK_AudioMute,        spawn, {.v = pulsemutecmd}},
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
